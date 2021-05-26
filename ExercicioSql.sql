@@ -6,6 +6,8 @@
 -- EQUIPE: SUPRIMENTOS
 -- DATA DE REFERÊNCIA: 05/2021
 
+-- 08 37:00
+
                                       -- DESAFIOS --
 
 -- 1 – Criar uma View podendo usar sub-select para retornar as colunas Código do Usuário,
@@ -27,12 +29,12 @@
                                           dt_cadastro DATE
             );
 
-           
+
 
             SELECT * FROM PRODUTO_COPIA;
 
             SELECT * FROM produto;
-          SELECT cd_produto, ds_produto 
+          SELECT cd_produto, ds_produto
           FROM dbamv.produto
           WHERE ds_produto LIKE 'CA%' ;
 
@@ -60,16 +62,17 @@
         SELECT * FROM dbamv.est_pro;
         SELECT * FROM dbamv.produto;
         SELECT * FROM dbamv.tip_presc;
-              
+
         SELECT e.cd_estoque,p.cd_produto, p.ds_produto
         FROM dbamv.est_pro e,
              dbamv.produto p
-        WHERE sn_mestre ='S';
+
+        WHERE sn_mestre ='N';
 
             NOT IN
             NOT EXISTS
 
-             
+
 
 
 
@@ -95,27 +98,47 @@
 
             SELECT cd_produto,
                   (vl_estoque_final+vl_estoque_final) vl_final,
-                  Round(vl_estoque_final+vl_estoque_final)/vl_estoque_final*100 vl_percentual
+                 Round(vl_estoque_final+vl_estoque_final)/vl_estoque_final*100 vl_percentual
             FROM dbamv.c_conest
             WHERE cd_ano = 2021
             AND cd_mes = 4
             ORDER BY cd_ano DESC, cd_mes desc;
 
 
+
+
 -- 6 – Criar a atualização da coluna do saldo da tabela dbam.lot_pro usando a função dbamv.fnc_mges_saldo_anterior_lote (essa função retorna
 --      o saldo calulado do lote, pra o saldo atual user com parametro a função de data e hora atual). O filtro deve ser
 --      o estoque e produto. Lembrando que a função retorna o saldo na unidade padrão e a lot_pro guarda o saldo na unidade de referencia.
 
+          SELECT *
+          FROM dbamv.lot_pro;
+          WHERE text LIKE '%fnc_mges_saldo_anterior_lote%';
+         -- dbamv.fnc_mges_saldo_anterior_lote
 
 -- 7 – Faça uma consulta usando como parametro a função sysdate e utilizando as funções de data retorne o primeiro dia do ano, primeiro dia
 --     do ano seguinte,  primeiro dia do mês, ultimo dia do mês, quantidade de dias do ano até a data atual.
 
+          SELECT SYSDATE AGORA,
+                Trunc(SYSDATE, 'YEAR') FIRST_DAY_YEAr,
+                Trunc(SYSDATE, 'YEAR') FIRST_DAY_YEAR,
+                Trunc(SYSDATE, 'MONTH') FIRST_DAY_MOUTH,
+                LAST_DAY(SYSDATE) LAST_DAY_MOUTH
+          FROM DUAL;
+
 -- 8 – Crie uma consulta para retirar descrição do produto os textos (MESTRE), (M) e MESTRE, para produtos que não são mestres.
 
+          SELECT cd_produto,ds_produto
+          FROM dbamv.produto
+          WHERE sn_mestre = 'N'
+          AND InStr(ds_produto, 'MESTRE')= 0;
+          AND InStr(ds_produto, '(MESTRE)')= 0;
+          AND InStr(ds_produto, '(M)')= 0;
+
+
+         
 -- 9 – Crie uma consulta que torne a descrição do produto, o tipo (sn_mestre – retornar a palavra NORMAL, MESTRE ou OUTROS)
 --     e a quantidade de repetições. Só retornar os produto que tem mais de uma ocorrência, ou seja os produtos duplicados.
-SELECT * FROM
-dbamv.produto;
 
 -- 10 -  Coloque no nosso grupo do treinamento no Teams um trecho de código novo que você aprendeu ou que achou mais
 --       interessante durante o curso.
