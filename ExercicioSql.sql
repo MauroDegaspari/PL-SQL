@@ -65,6 +65,7 @@
 --     de item de prescrição (dbamv.tip_presc). Deve exibir nessa lista o código e nome do estoque, código e nome do produto, o código
 --     e o nome do mestre na mesma linha, a unidade padrão de acordo com a função e o saldo atual.
 --     Para os produtos que não tem mestre informar na descrição o texto ‘MESTRE NÃO INFORMADO’.
+
         SELECT * FROM dbamv.est_pro;
         SELECT * FROM dbamv.produto;
         SELECT * FROM dbamv.tip_presc;
@@ -85,8 +86,6 @@
 -- 4 – Inserir uma nova fábrica na tabela DBAMV.FABRICA, inserir novos carros, inserir todos
 --     acessórios já existentes para os novos carros usando um sub-select.
 
---AULA VIDEO SQL 1 20210405
-
             CREATE TABLE DBAMV.FABRICA(CD_FABRICA     NUMBER NOT NULL,
                                        NM_FABRICA     VARCHAR2(100),
                                        DT_CADASTRO    DATE DEFAULT SYSDATE NOT NULL,
@@ -104,10 +103,10 @@
 
             SELECT * FROM user_sequences WHERE sequence_name LIKE 'seq_fabrica';
             SELECT Max(cd_fabrica) FROM dbamv.fabrica;
-            ALTER TABLE dbamv.fabrica ADD
-
 
             SELECT * FROM dbamv.fabrica;
+
+          INSERT INTO DBAMV.FABRICA(CD_FABRICA, NM_FABRICA, DT_CADASTRO, DT_DESATIVACAO, SN_ATIVA) VALUES(seq_fabrica.NEXTVAL, '23U4', SYSDATE, '', 'S' );
 
 
 -- 5 -  Crie uma consulta na ultima consolidação (dbamv.c_conest) , somando valor final de estoque, agrupando por estoque,
@@ -118,7 +117,7 @@
                  Round(vl_estoque_final+vl_estoque_final)/vl_estoque_final*100 vl_percentual
             FROM dbamv.c_conest
             WHERE cd_ano = 2021
-            AND cd_mes = 4
+            AND cd_mes = 6
             ORDER BY cd_ano DESC, cd_mes desc;
 
 
@@ -167,7 +166,7 @@
 
       SELECT ds_produto,
              Nvl(to_char(cd_produto_tem), 'Produto vazio') teste_text,
-             Decode(sn_mestre, 'S','mestre','N','normal', 'outros') consulta_forma_decode,
+             Decode(sn_mestre, 'S','mestre','N','normal', 'outros') consulta_forma_decode,      -- forma contraida
              CASE sn_mestre WHEN 'S' THEN 'Mestre'
                             WHEN 'N' THEN 'NORMAL'
                             ELSE 'OUTROS'
